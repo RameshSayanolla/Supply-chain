@@ -1,0 +1,65 @@
+Create database Supplychain;
+  use supply chain;
+select * from inventory;
+select * from electronics;
+-------------------------- Q1. product wise sales -----------------
+
+select Product_Name ,sum(quantity*cost)as sales from electronics group by Product_Name order by sales desc;
+
+
+---------------------------Q2.region wise sales-----------------------------------
+select * from electronics;
+select Cust_Region as region ,sum(quantity*cost)as totalsale from electronics group by region order by totalsale desc;
+-----------------------------Q3.state wise sales----------------------------------------------------------------------
+select * from electronics;
+
+select Store_State as state ,sum(quantity*cost )as totalsale from electronics group by state order by totalsale desc;
+
+-------------------------------Q4.store wise sales------------------------------------------------------------------------------------
+select * from electronics;
+select Store_Name as store ,sum(quantity*cost)as totalsales  from electronics group by store order by totalsales desc limit 5;
+
+------------------------------Q5.month wise sales-------------------------------
+select * from electronics;
+select sum(quantity*cost)as mtdsales
+FROM electronics
+WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM date)
+AND EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM date);
+------------------------------Q6.Year wise sales-------------------------------------------------------------------
+
+select sum(quantity*cost)as ytdsales
+FROM electronics
+WHERE EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM date);
+---------------------------- Q7.quarterwise sales----------------------------------------
+select sum(quantity*cost)as qtd sales
+FROM electronics
+WHERE EXTRACT(QUARTER FROM date) = EXTRACT(QUARTER FROM date)
+AND EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM date);
+-----------------------------Q8 total sales growth----------------------------------------
+SELECT 
+    YEAR(date) AS sales_year,
+    SUM(quantity*cost) AS total_sales,
+    SUM(quantity*cost) - LAG(SUM(quantity*cost), 1, 0) OVER (ORDER BY YEAR(date)) AS sales_growth
+FROM 
+    electronics
+GROUP BY 
+    YEAR(date)
+ORDER BY 
+    YEAR(date);
+    ----------------------------Q9.daywase sales-------------------------------------------------
+    select * from electronics;
+    SELECT (day(date)) AS transactiondata, SUM(quantity*cost) AS dailysales
+FROM electronics group by transactiondata order by transactiondata;
+---------------------------Q10. Total Female customers----------------------------------------
+select * from electronics;
+SELECT COUNT(*) AS Total_Females
+FROM electronics
+WHERE Cust_Gender = 'Female';
+------------------------------Q11.Total Male customers-------------------------------------------------
+select * from electronics;
+SELECT COUNT(*) AS Total_Male
+FROM electronics
+WHERE Cust_Gender = 'Male';
+------------------------Q12.TOP  5 store wise sales ------ ---------------------------
+select * from electronics;
+select Store_Name as store ,sum(quantity*cost)as totalsales  from electronics group by store order by totalsales desc limit 5;
